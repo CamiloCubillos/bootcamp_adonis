@@ -36,6 +36,7 @@ export default class AnimalsController {
         try{
             const animal = await Animal.findBy('codigo_animal',requestData.codigo_animal)
             const animalExists: Boolean = await this.checkAnimalExistence(requestData.codigo_animal)
+            console.log(requestData.codigo_animal)
             if(animalExists){
                 const nuevaData = {
                     'nombre': requestData.nombre,
@@ -73,7 +74,7 @@ export default class AnimalsController {
 
     private async checkAnimalExistence(codigo_animal: Number): Promise<Boolean>{
         const total = await Animal.query().where({"codigo_animal":codigo_animal}).count('*').from('animals')
-        if(parseInt(total[0]["count(*)"]) == 1){
+        if(parseInt(total[0]['count']) == 1){
             return true;
         }else{
             return false;
