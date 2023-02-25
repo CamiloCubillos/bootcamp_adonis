@@ -31,14 +31,19 @@ Route.group(()=>{
 
   Route.group(()=>{
     Route.group(()=>{
-      Route.get('','BooksController.index')
-      Route.get('/books/:id','BooksController.show')
-      Route.put('/books/update/:id','BooksController.update')
-      Route.post('','BooksController.store')
+      Route.post('','BooksController.storeBook')
+      Route.get('','BooksController.getAllBooks')
+      Route.get(':id','BooksController.getBookById')
+      Route.put(':id','BooksController.updateBook')
+      Route.delete(':id','BooksController.deleteBook')
     }).prefix('/books')
 
     Route.group(() => {
+      Route.get('','PerfilsController.getAllPerfils')
       Route.post('','PerfilsController.createPerfil')
+      Route.get(':id','PerfilsController.getPerfilById')
+      Route.put(':id','PerfilsController.updatePerfil')
+      Route.delete(':id','PerfilsController.deletePerfil')
     }).prefix('/perfil')
 
     Route.group(() => {
