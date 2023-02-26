@@ -7,6 +7,10 @@ export default class BooksController {
             const book = new Book()
             book.title = request.input('title')
             book.author = request.input('author')
+            book.editorial = request.input('editorial')
+            book.numero_paginas = request.input('numero_paginas')
+            book.formato = request.input('formato')
+
             await book.save()
             return {
                 "libro":book,
@@ -78,7 +82,7 @@ export default class BooksController {
 
     private async hasPermissions(auth) : Promise<boolean>{
         await auth.use('api').authenticate()
-        const rol = auth.use('api').Book?.perfil
+        const rol = auth.use('api').user?.perfil
         if(rol == 1 || rol == 2){  // El token pertenece a un usuario con perfil 'admin' o 'bibliotecario'?
             return true
         }else{
