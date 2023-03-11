@@ -1,0 +1,3 @@
+sonar-scanner.bat -D"sonar.projectKey=prueba" -D"sonar.sources=." -D"sonar.host.url=http://localhost:9000" -D"sonar.login=sqp_811cef5a47c3291100b957f17a236737b76d98c2"
+
+sonar-scanner.bat -D"sonar.projectKey=prueba2" -D"sonar.sources=." -D"sonar.host.url=http://localhost:9000" -D"sonar.login=sqp_90b23546b6db62a9b61e9906a60c351b5932c199"
