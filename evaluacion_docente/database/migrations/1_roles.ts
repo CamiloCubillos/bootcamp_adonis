@@ -12,7 +12,8 @@ export default class Roles extends BaseSchema {
       this.defer(async (db) => {
         await db.table(this.tableName).insert([
           {id:1,name:"admin"},
-          {id:2,name:"user"}
+          {id:2,name:"student"},
+          {id:3,name:"teacher"}
         ])
       })
 

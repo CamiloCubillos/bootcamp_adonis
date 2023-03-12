@@ -6,8 +6,7 @@ export default class Forms extends BaseSchema {
   public async up () {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id').primary()
-      table.integer('student_id').unsigned().references('users.id').onDelete('CASCADE')
-      table.integer('answer_id').unsigned().references('answers.id').onDelete('CASCADE')
+      table.integer('user_id').unsigned().references('users.id').onDelete('CASCADE')
       table.boolean('state')
     })
   }

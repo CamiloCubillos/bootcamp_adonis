@@ -8,6 +8,14 @@ export default class DocumentTypes extends BaseSchema {
       table.increments('id').primary()
       table.string('name')
       table.boolean('state')
+
+      this.defer(async (db) => {
+        await db.table(this.tableName).insert([
+          {id:1,name:"cedula de ciudadania"},
+          {id:2,name:"tarjeta de identidad"},
+          {id:3,name:"cedula de extranjero"}
+        ])
+      })
     })
   }
 
