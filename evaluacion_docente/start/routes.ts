@@ -20,16 +20,12 @@
 
 import Route from '@ioc:Adonis/Core/Route'
 
-Route.get('/', async () => {
-  return { hello: 'world' }
-})
-
 Route.group(() => {
   Route.post('/login','UsersController.login')
   Route.group(() => {
     Route.post('','UsersController.register')
     Route.get('','UsersController.getAllUsers')
-    Route.get('/:id','UsersController.getUserById')
-    Route.put('/:id','UsersController.updateUser')
+    Route.get('/:document','UsersController.getUserByDocument')
+    Route.put('/:document','UsersController.updateUser')
   }).prefix('/user').middleware(['auth','admin'])
 }).prefix('/api/v1')

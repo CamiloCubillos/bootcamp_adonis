@@ -4,7 +4,7 @@ import Env from '@ioc:Adonis/Core/Env'
 
 export default class AuthJwt {
   public async handle(ctx: HttpContextContract, next: () => Promise<void>) {
-    const authorizationHeader = ctx.request.header('authorization')
+    const authorizationHeader = ctx.request.header('Authorization')
 
     if(authorizationHeader == undefined){
       return ctx.response.status(401).send({

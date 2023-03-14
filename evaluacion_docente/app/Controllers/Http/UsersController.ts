@@ -24,37 +24,33 @@ export default class UsersController {
             response.status(200)
             return{
                 "state":true, 
-                "message":"Usuario creado correctamente"
+                "message":"Usuario creado correctamente",
             }
         }catch(error){
             response.status(500)
             // Verificar si se ha violado una restriccion de la base de datos. Ej: Valores duplicados
             if(error.constraint){
-              return{
-                "msg":this.handleConstraintError(error.constraint)
-              }
-            }else{
-              return{
-                "state":false, 
-                "message":"Fallo en la creación del usuario"
-            }
+              response.json({
+                "state":false,
+                "message":this.handleConstraintError(error.constraint)
+              })
             }
         }
     }
 
     public async login({request, response}: HttpContextContract){
-        const correo = request.input('correo');
+        const email = request.input('email');
         const password = request.input('password');
         try {
-          //consultar si existe usuario con ese correo
-          const user = await User.findBy('email', correo)
+          //consultar si existe usuario con ese email
+          const user = await User.findBy('email', email)
           if(!user){
-            return response.status(400).json({msj: 'El usuario no existe'})
+            return response.status(400).json({message: 'El usuario no existe'})
           }
           //Validar si la contraseña ingresada es igual a la del usaurio  
           const validPassword = bcryptjs.compareSync( password, user.password );
           if ( !validPassword ) {
-            return response.status(400).json({msj: 'Los datos de acceso no son correctos'})
+            return response.status(400).json({message: 'Los datos de acceso no son correctos'})
           }
 
           //Crear token con el id del usuario
@@ -65,44 +61,29 @@ export default class UsersController {
     
           response.status(200).json({
             token,
-            "msg": "Usuario logueado"})
+            "message": "Usuario logueado"})
         } catch (error) {
-          console.log(error)
-          response.json({"msg": "Error en el servidor."});
+          response.status(500)
+          response.json({"message": "Error al intentar iniciar sesión."});
+          return error
         }
     }
 
     public async getAllUsers({response} : HttpContextContract){
-      try{
-        const users = await User.all()
-        response.status(200)
-        return users
-      }catch(error){
-        console.log(error)
-        response.status(500)
-        return {
-          "message":"Fallo al listar usuarios. Error en el servidor."
-        }
-      }
+      const users = await User.all()
+      response.status(200)
+      return users
     }
 
-    public async getUserById({response, params} : HttpContextContract){
-      try {
-        const user = await User.find(params.id)
-        if(user){
-          response.status(200)
-          return user
-        }else{
-          response.status(404)
-          return {
-            "message":`El usuario con ID: '${params.id}' no existe.`
-          }
-        }
-      } catch (error) {
-        console.log(error)
-        response.status(500)
+    public async getUserByDocument({response, params} : HttpContextContract){
+      const user = (await User.query().where('document_number',params.document))[0]
+      if(user){
+        response.status(200)
+        return user
+      }else{
+        response.status(404)
         return {
-          "message":"Fallo al listar el usuario. Error en el servidor."
+          "message":`El usuario con ID: '${params.document}' no existe.`
         }
       }
     }
@@ -110,8 +91,8 @@ export default class UsersController {
     public async updateUser({response,request,params} : HttpContextContract){
       try {
         const {firstName, secondName, surname, secondSurName, documentTypeId, documentNumber, rolId, email, password, phone} = request.all();
-        const id = params.id
-        const user = await User.find(id)
+        const document = params.document
+        const user = (await User.query().where('document_number',document))[0]
         if(user){
           const salt = bcryptjs.genSaltSync();
           // Usar 'merge' para actualizar SOLAMENTE las propiedades que se envien por el request. Las propiedades no
@@ -130,12 +111,12 @@ export default class UsersController {
           }).save()
           response.status(200)
           return{
-            "msg":"Actualización realizada con exito"
+            "message":"Actualización realizada con exito"
           }
         }else{
           response.status(404)
           return{
-            "msg":`El usuario con ID ${id} no se encuentra registrado.`
+            "message":`El usuario con documento de identidad: ${document} no se encuentra registrado.`
           }
         }
 
@@ -144,7 +125,14 @@ export default class UsersController {
           response.status(200)
           return{"message":"No hubo nada que actualizar. La operación terminó con exito."}
         }
+
         response.status(500)
+        if(error.constraint){
+          response.json({
+            "state":false,
+            "message":this.handleConstraintError(error.constraint)
+          })
+        }
         return {
           "message":"Fallo al actualizar el usuario. Error en el servidor."
         }

@@ -1,4 +1,5 @@
 import BaseSchema from '@ioc:Adonis/Lucid/Schema'
+const bcryptjs = require('bcryptjs')
 
 export default class Users extends BaseSchema {
   protected tableName = 'users'
@@ -17,6 +18,14 @@ export default class Users extends BaseSchema {
       table.integer('rol_id').unsigned().references('roles.id').onDelete('CASCADE')
       table.string('phone',50).unique()
       table.boolean('state')
+    })
+
+    this.defer(async (db) => {
+      await db.table(this.tableName).insert([
+        {first_name:'mock',second_name:'mock',surname:'mock',second_sur_name:'mock',document_type_id:1,document_number:'1',email:'admin@mail.com',password:bcryptjs.hashSync('password',bcryptjs.genSaltSync()),rol_id:1,phone:'mock'},
+        {first_name:'mock',second_name:'mock',surname:'mock',second_sur_name:'mock',document_type_id:1,document_number:'2',email:'student@mail.com',password:bcryptjs.hashSync('password',bcryptjs.genSaltSync()),rol_id:2,phone:'mock1'},
+        {first_name:'mock',second_name:'mock',surname:'mock',second_sur_name:'mock',document_type_id:1,document_number:'3',email:'teacher@mail.com',password:bcryptjs.hashSync('password',bcryptjs.genSaltSync()),rol_id:3,phone:'mock2'}
+      ])
     })
   }
 
