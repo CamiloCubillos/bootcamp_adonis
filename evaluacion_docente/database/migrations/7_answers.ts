@@ -7,9 +7,8 @@ export default class Answers extends BaseSchema {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id').primary()
       table.string('answer')
-      table.boolean('is_correct')
       table.integer('question_id').unsigned().references('questions.id').onDelete('CASCADE')
-      table.boolean('state')
+      table.integer('evaluation_id').unsigned().references('evaluations.id').onDelete('CASCADE')
     })
   }
 

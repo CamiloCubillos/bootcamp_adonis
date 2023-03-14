@@ -8,12 +8,6 @@ export default class Form extends BaseModel {
   @column() public studentId : number
   @column() public answerId : number
 
-  @hasOne(() => User,{
-    localKey: "studentId",
-    foreignKey: "id"
-  })
-  public student : HasOne<typeof User>
-
   @hasMany(() => Question,{
     localKey: "formId",
     foreignKey: "id"

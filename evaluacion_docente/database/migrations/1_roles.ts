@@ -7,7 +7,6 @@ export default class Roles extends BaseSchema {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id').primary()
       table.string('name')
-      table.boolean('state')
       
       this.defer(async (db) => {
         await db.table(this.tableName).insert([

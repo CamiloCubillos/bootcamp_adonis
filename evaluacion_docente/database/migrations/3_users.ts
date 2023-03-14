@@ -17,7 +17,6 @@ export default class Users extends BaseSchema {
       table.string('password').notNullable()
       table.integer('rol_id').unsigned().references('roles.id').onDelete('CASCADE')
       table.string('phone',50).unique()
-      table.boolean('state')
     })
 
     this.defer(async (db) => {
