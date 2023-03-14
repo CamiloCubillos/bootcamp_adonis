@@ -6,7 +6,7 @@ export default class Evaluations extends BaseSchema {
   public async up () {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id').primary()
-      table.integer('user_id').unsigned().references('users.id').onDelete('CASCADE')
+      table.string('name',100).notNullable().unique()
     })
   }
 

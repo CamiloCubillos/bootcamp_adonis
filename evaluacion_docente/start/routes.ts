@@ -19,6 +19,7 @@
 */
 
 import Route from '@ioc:Adonis/Core/Route'
+import FormsController from 'App/Controllers/Http/FormsController'
 
 Route.group(() => {
   Route.post('/login','UsersController.login')
@@ -28,4 +29,12 @@ Route.group(() => {
     Route.get('/:document','UsersController.getUserByDocument')
     Route.put('/:document','UsersController.updateUser')
   }).prefix('/user').middleware(['auth','admin'])
+  Route.group(()=>{
+    Route.get('','FormsController.getAllFormsIds')
+    Route.get('/:id','FormsController.getFormById')
+    Route.post('','FormsController.createForm').middleware(['auth','admin'])
+  }).prefix('/form')
+  Route.group(()=>{
+    Route.post('','QuestionsController.createQuestion').middleware(['auth','admin'])
+  }).prefix('/question')
 }).prefix('/api/v1')
