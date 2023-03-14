@@ -143,7 +143,7 @@ test.group('User CRUD tests...',()=>{
     })
     
     
-    test('Should give error when login with non-existent email...', async ({ client, assert }) => {
+    test('Should give error when login with non-existent email...', async ({ client }) => {
         const response = await client.post('api/v1/login').json({
             "email":"thisemaildoesntexist@mail.com",
             "password":"password"
@@ -155,7 +155,7 @@ test.group('User CRUD tests...',()=>{
         )
     })
     
-    test('Should give error when login with wrong password...', async ({ client, assert }) => {
+    test('Should give error when login with wrong password...', async ({ client }) => {
         const response = await client.post('api/v1/login').json({
             "email":"admin@mail.com",
             "password":"incorrectpassword"
@@ -177,7 +177,7 @@ test.group('User CRUD tests...',()=>{
         }
     })
     
-    test('Should login when valid credentials are given...', async ({ client, assert }) => {
+    test('Should login when valid credentials are given...', async ({ client }) => {
         const response = await client.post('api/v1/login').json({
             "email":"admin@mail.com",
             "password":"password"
@@ -296,5 +296,3 @@ test.group('User CRUD tests...',()=>{
     })
     
 })
-
-

@@ -16,13 +16,17 @@ export default class AuthJwt {
       let token = authorizationHeader.split(' ')[1]
       jwt.verify(token, Env.get('JWT_SECRET_KEY'), (error)=>{
         if(error){
-          console.log(error)
-          throw new Error("Token expirado");
+          switch(error.message){
+            case 'jwt expired':
+              throw new Error("Token expirado");
+            case 'jwt malformed':
+              throw new Error("Token inválido");
+          }
         }
     })
     await next()
     }catch(error){ 
-      ctx.response.status(401).send({"msg":`${error}`})
+      ctx.response.status(401).send({"message":`${error}`})
     }
   }
 }
