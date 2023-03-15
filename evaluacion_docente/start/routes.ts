@@ -24,10 +24,10 @@ import FormsController from 'App/Controllers/Http/FormsController'
 Route.group(() => {
   Route.post('/login','UsersController.login')
   Route.group(() => {
-    Route.post('','UsersController.register')
+    Route.post('/create','UsersController.register')
     Route.get('','UsersController.getAllUsers')
-    Route.get('/:document','UsersController.getUserByDocument')
-    Route.put('/:document','UsersController.updateUser')
+    Route.get('/getUser/:id','UsersController.getUserById')
+    Route.put('/update/:id','UsersController.updateUser')
   }).prefix('/user').middleware(['auth','admin'])
   Route.group(()=>{
     Route.get('','FormsController.getAllFormsIds')

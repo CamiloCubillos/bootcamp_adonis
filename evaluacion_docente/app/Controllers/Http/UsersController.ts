@@ -25,6 +25,7 @@ export default class UsersController {
             return{
                 "state":true, 
                 "message":"Usuario creado correctamente",
+                "id":(await (User.query().max('id')))[0]['max']
             }
         }catch(error){
             response.status(500)
@@ -32,7 +33,8 @@ export default class UsersController {
             if(error.constraint){
               response.json({
                 "state":false,
-                "message":this.handleConstraintError(error.constraint)
+                "message":"Fallo en la creación del usuario",
+                "error": this.handleConstraintError(error.constraint)
               })
             }
         }
@@ -43,14 +45,15 @@ export default class UsersController {
         const password = request.input('password');
         try {
           //consultar si existe usuario con ese email
-          const user = await User.findBy('email', email)
+          const user = (await User.query().where('email', email).preload('rol'))[0]
+          const invalidUserResponse = {"state":false,"message":"contraseña o email invalido"}
           if(!user){
-            return response.status(400).json({message: 'El usuario no existe'})
+            return response.status(400).json(invalidUserResponse)
           }
           //Validar si la contraseña ingresada es igual a la del usaurio  
           const validPassword = bcryptjs.compareSync( password, user.password );
           if ( !validPassword ) {
-            return response.status(400).json({message: 'Los datos de acceso no son correctos'})
+            return response.status(400).json(invalidUserResponse)
           }
 
           //Crear token con el id del usuario
@@ -61,7 +64,11 @@ export default class UsersController {
     
           response.status(200).json({
             token,
-            "message": "Usuario logueado"})
+            "state":true,
+            "id":user.id,
+            "name":this.getUserFullname(user),
+            "role": user.rol.name,
+            "message": "Ingreso exitoso"})
         } catch (error) {
           response.status(500)
           response.json({"message": "Error al intentar iniciar sesión."});
@@ -75,15 +82,17 @@ export default class UsersController {
       return users
     }
 
-    public async getUserByDocument({response, params} : HttpContextContract){
-      const user = (await User.query().where('document_number',params.document))[0]
+    public async getUserById({response, params} : HttpContextContract){
+      const user = (await User.query().where('id',params.id))[0]
       if(user){
         response.status(200)
         return user
       }else{
         response.status(404)
         return {
-          "message":`El usuario con ID: '${params.document}' no existe.`
+          "state":false,
+          "message":"Error al consultar el detalle del usuario",
+          "error":`El usuario con ID: '${params.id}' no existe.`
         }
       }
     }
@@ -91,8 +100,8 @@ export default class UsersController {
     public async updateUser({response,request,params} : HttpContextContract){
       try {
         const {firstName, secondName, surname, secondSurName, documentTypeId, documentNumber, rolId, email, password, phone} = request.all();
-        const document = params.document
-        const user = (await User.query().where('document_number',document))[0]
+        const id = params.id
+        const user = (await User.query().where('id',id))[0]
         if(user){
           const salt = bcryptjs.genSaltSync();
           // Usar 'merge' para actualizar SOLAMENTE las propiedades que se envien por el request. Las propiedades no
@@ -111,12 +120,14 @@ export default class UsersController {
           }).save()
           response.status(200)
           return{
+            "state":true,
             "message":"Actualización realizada con exito"
           }
         }else{
           response.status(404)
           return{
-            "message":`El usuario con documento de identidad: ${document} no se encuentra registrado.`
+            "message":'Error al actualizar',
+            "error":`El usuario con id: ${id} no se encuentra registrado.`
           }
         }
 
@@ -130,11 +141,13 @@ export default class UsersController {
         if(error.constraint){
           response.json({
             "state":false,
-            "message":this.handleConstraintError(error.constraint)
+            "message":"Error al actualizar",
+            "error":this.handleConstraintError(error.constraint)
           })
         }
         return {
-          "message":"Fallo al actualizar el usuario. Error en el servidor."
+          "message":"Error al actualizar",
+          "error":"Error en el lado del servidor."
         }
       }
     }
@@ -163,5 +176,9 @@ export default class UsersController {
           break;
       }
       return errorMsg
+    }
+
+    private getUserFullname(user: User) : string{
+      return `${user.firstName?user.firstName+" ":""}${user.secondName?user.secondName+" ":""}${user.surname?user.surname+" ":""}${user.secondSurName?user.secondSurName+" ":""}`
     }
 }
