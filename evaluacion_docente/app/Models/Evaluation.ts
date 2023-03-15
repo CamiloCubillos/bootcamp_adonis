@@ -5,7 +5,7 @@ import User from './User'
 
 export default class Evaluation extends BaseModel {
   @column({ isPrimary: true }) public id: number
-  @column() private userId : number
+  @column() public userId : number
 
   @hasOne(() => User,{
     localKey:'userId',
@@ -14,8 +14,8 @@ export default class Evaluation extends BaseModel {
   public teacher : HasOne<typeof User>
 
   @hasMany(() => Answer,{
-    localKey:'evaluationId',
-    foreignKey:'id'
+    localKey:'id',
+    foreignKey:'evaluationId'
   })
   public answers : HasMany<typeof Answer>
 }

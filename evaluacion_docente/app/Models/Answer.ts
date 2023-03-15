@@ -9,8 +9,8 @@ export default class Answer extends BaseModel {
   @column({ isPrimary: true }) public id: number
   @column() public answer : string
   @column() public isCorrect : boolean
-  @column() private questionId : number
-  @column() private evaluationId: number
+  @column() public questionId : number
+  @column() public evaluationId: number
 
   @hasOne(() => Question,{
     localKey: "questionId",

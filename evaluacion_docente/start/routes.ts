@@ -37,4 +37,8 @@ Route.group(() => {
   Route.group(()=>{
     Route.post('','QuestionsController.createQuestion').middleware(['auth','admin'])
   }).prefix('/question')
+  Route.group(()=>{
+    Route.post('','EvaluationsController.createEvaluation').middleware(['auth','student'])
+    Route.get('','EvaluationsController.getAllEvaluations').middleware(['auth','admin'])
+  }).prefix('/evaluation')
 }).prefix('/api/v1')
