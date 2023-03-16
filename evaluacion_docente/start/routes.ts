@@ -19,7 +19,6 @@
 */
 
 import Route from '@ioc:Adonis/Core/Route'
-import FormsController from 'App/Controllers/Http/FormsController'
 
 Route.group(() => {
   Route.post('/login','UsersController.login')
@@ -35,10 +34,15 @@ Route.group(() => {
     Route.post('','FormsController.createForm').middleware(['auth','admin'])
   }).prefix('/form')
   Route.group(()=>{
-    Route.post('','QuestionsController.createQuestion').middleware(['auth','admin'])
-  }).prefix('/question')
+    Route.post('/create','QuestionsController.createQuestion').middleware('admin')
+    Route.get('/getQuestions','QuestionsController.getQuestions')
+    Route.get('/getOptions/:id','QuestionsController.getQuestionOptions')
+    Route.get('/getForm','QuestionsController.getForm')
+    Route.put('/updateQuestion/:id','QuestionsController.updateQuestion').middleware('admin')
+    Route.delete('/deleteQuestion/:id','QuestionsController.deleteQuestion').middleware('admin')
+  }).prefix('/questions').middleware('auth')
   Route.group(()=>{
-    Route.post('','EvaluationsController.createEvaluation').middleware(['auth','student'])
+    Route.post('/postanswers','EvaluationsController.createEvaluation').middleware(['auth','student'])
     Route.get('','EvaluationsController.getAllEvaluations').middleware(['auth','admin'])
   }).prefix('/evaluation')
 }).prefix('/api/v1')

@@ -7,7 +7,6 @@ export default class Questions extends BaseSchema {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id').primary()
       table.string('question')
-      table.integer('form_id').unsigned().references('forms.id').onDelete('CASCADE')
     })
   }
 

@@ -6,7 +6,7 @@ export default class Options extends BaseSchema {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id').primary()
       table.string('option')
-      table.integer('question_id').unsigned().references('forms.id').onDelete('CASCADE')
+      table.integer('question_id').unsigned().references('questions.id').onDelete('CASCADE')
     })
   }
 
