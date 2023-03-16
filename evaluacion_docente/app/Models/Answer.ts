@@ -18,7 +18,7 @@ export default class Answer extends BaseModel {
   public question : HasOne<typeof Question>
 
   @hasOne(() => Form,{
-    localKey:'evaluationId',
+    localKey:'formId',
     foreignKey:'id'
   })
   public form : HasOne<typeof Form>

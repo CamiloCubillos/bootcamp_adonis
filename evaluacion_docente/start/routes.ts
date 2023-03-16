@@ -38,5 +38,6 @@ Route.group(() => {
   Route.group(()=>{
     Route.post('/postanswers','FormsController.createForm').middleware('student')
     Route.get('/getQuestions','FormsController.getForm')
+    Route.get('/getAnswers/:id_teacher','FormsController.getAnswers')
   }).prefix('/form').middleware('auth')
 }).prefix('/api/v1')

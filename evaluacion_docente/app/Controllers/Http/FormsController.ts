@@ -57,4 +57,24 @@ export default class FormsController {
         response.status(200)
         return forms
     }
+
+    public async getAnswers({response,params}: HttpContextContract){
+        try {
+            const answers = await Answer.query().preload('question').whereHas('form',formsQuery=> {
+                formsQuery.where('user_id',params.id_teacher)
+            })
+            response.status(200)
+            response.json({
+                "state":true,
+                "answers": answers
+            })
+        } catch (error) {
+            response.status(500)
+            response.json({
+                "state": false,
+                "message": "Error al obtener el listado",
+                "error":error.message
+            })
+        }
+    }
 }

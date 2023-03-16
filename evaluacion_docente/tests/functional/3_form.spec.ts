@@ -59,4 +59,20 @@ test.group('Form CRUD tests...',()=>{
             assert.properties(err,['state','message','error'])
         }
     })
+
+    test('Should list all form\'s answers for a teacher id',async ({ client, assert }) => {
+        try{
+            const token = await getToken(2) // Obtener token de un usuario con rol 'estudiante'
+            const response = await client.get('api/v1/form/getAnswers/3').header('Authorization',`Bearer ${token}`)
+            response.assertStatus(200)
+            assert.isObject(response.body())
+            assert.properties(response.body(),['state','answers'])
+            assert.isArray(response.body().answers)
+        }catch(error){
+            console.log(error)
+            const err = JSON.parse(error)
+            assert.isObject(err)
+            assert.properties(err,['state','message','error'])
+        }
+    })
 })
