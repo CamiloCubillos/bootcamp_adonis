@@ -1,4 +1,3 @@
-import { DateTime } from 'luxon'
 import { BaseModel, column, HasOne, hasOne } from '@ioc:Adonis/Lucid/Orm'
 import Role from './Role'
 import DocumentType from './DocumentType'
