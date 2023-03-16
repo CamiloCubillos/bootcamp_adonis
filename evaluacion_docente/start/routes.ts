@@ -29,20 +29,14 @@ Route.group(() => {
     Route.put('/update/:id','UsersController.updateUser')
   }).prefix('/user').middleware(['auth','admin'])
   Route.group(()=>{
-    Route.get('','FormsController.getAllFormsIds')
-    Route.get('/:id','FormsController.getFormById')
-    Route.post('','FormsController.createForm').middleware(['auth','admin'])
-  }).prefix('/form')
-  Route.group(()=>{
     Route.post('/create','QuestionsController.createQuestion').middleware('admin')
     Route.get('/getQuestions','QuestionsController.getQuestions')
     Route.get('/getOptions/:id','QuestionsController.getQuestionOptions')
-    Route.get('/getForm','QuestionsController.getForm')
     Route.put('/updateQuestion/:id','QuestionsController.updateQuestion').middleware('admin')
     Route.delete('/deleteQuestion/:id','QuestionsController.deleteQuestion').middleware('admin')
   }).prefix('/questions').middleware('auth')
   Route.group(()=>{
-    Route.post('/postanswers','EvaluationsController.createEvaluation').middleware(['auth','student'])
-    Route.get('','EvaluationsController.getAllEvaluations').middleware(['auth','admin'])
-  }).prefix('/evaluation')
+    Route.post('/postanswers','FormsController.createForm').middleware('student')
+    Route.get('/getQuestions','FormsController.getForm')
+  }).prefix('/form').middleware('auth')
 }).prefix('/api/v1')

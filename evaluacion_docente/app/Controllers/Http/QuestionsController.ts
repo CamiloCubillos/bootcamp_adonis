@@ -90,24 +90,6 @@ export default class QuestionsController {
         }
     }
 
-    public async getForm({response} : HttpContextContract){
-        try {
-            const form : Question[] = await Question.query().preload('options')
-            response.status(200)
-            return {
-                "state":true,
-                "questions":form
-            }
-        } catch (error) {
-            response.status(500)
-            response.json({
-                "state": false,
-                "message": "Error al obtener el listado",
-                "error":error.message
-            })
-        }
-    }
-
     public async deleteQuestion({response,params} : HttpContextContract){
         try {
             const id = params.id

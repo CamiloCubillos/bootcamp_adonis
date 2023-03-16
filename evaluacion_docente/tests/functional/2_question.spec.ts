@@ -2,7 +2,7 @@ import { assert } from '@japa/preset-adonis'
 import { test } from '@japa/runner'
 import { getToken } from './getToken'
 
-test.group('Form CRUD tests...',()=>{
+test.group('Question CRUD tests...',()=>{
     // test('Should store a form without questions...',async ({ client }) => {
     //     const token = await getToken(1) // Obtener token de un usuario con rol 'admin'
     //     const response = await client.post('api/v1/form').header('Authorization',`Bearer ${token}`).json({
@@ -110,21 +110,6 @@ test.group('Form CRUD tests...',()=>{
             assert.isObject(response.body())
             assert.properties(response.body(),['state','message','options'])
         }catch(error){
-            const err = JSON.parse(error)
-            assert.isObject(err)
-            assert.properties(err,['state','message','error'])
-        }
-    })
-
-    test('Should list all form\' questions with their respective options',async ({ client, assert }) => {
-        try{
-            const token = await getToken(2) // Obtener token de un usuario con rol 'estudiante'
-            const response = await client.get('api/v1/questions/getForm').header('Authorization',`Bearer ${token}`)
-            response.assertStatus(200)
-            assert.isObject(response.body())
-            assert.properties(response.body(),['state','questions'])
-        }catch(error){
-            console.log(error)
             const err = JSON.parse(error)
             assert.isObject(err)
             assert.properties(err,['state','message','error'])

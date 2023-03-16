@@ -8,7 +8,7 @@ export default class Answers extends BaseSchema {
       table.increments('id').primary()
       table.string('answer')
       table.integer('question_id').unsigned().references('questions.id').onDelete('CASCADE')
-      table.integer('evaluation_id').unsigned().references('evaluations.id').onDelete('CASCADE')
+      table.integer('form_id').unsigned().references('forms.id').onDelete('CASCADE')
     })
   }
 

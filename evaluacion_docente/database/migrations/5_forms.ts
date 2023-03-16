@@ -1,7 +1,7 @@
 import BaseSchema from '@ioc:Adonis/Lucid/Schema'
 
 export default class Evaluations extends BaseSchema {
-  protected tableName = 'evaluations'
+  protected tableName = 'forms'
 
   public async up () {
     this.schema.createTable(this.tableName, (table) => {
