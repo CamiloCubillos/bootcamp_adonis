@@ -24,7 +24,7 @@ test.group('Question CRUD tests...',()=>{
     test('Should give error when trying to store a question with invalid data...',async ({ client, assert }) => {
         const token = await getToken(1) // Obtener token de un usuario con rol 'admin'
         try{
-            const response = await client.post('api/v1/questions/create').header('Authorization',`Bearer ${token}`).json({
+            await client.post('api/v1/questions/create').header('Authorization',`Bearer ${token}`).json({
                 "options": [
                     'lunes',
                     'martes',

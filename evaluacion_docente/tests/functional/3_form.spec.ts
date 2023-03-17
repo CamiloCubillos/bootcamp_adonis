@@ -15,7 +15,7 @@ test.group('Form CRUD tests...',()=>{
             ]
         })
         try{
-            const response = await client.post('api/v1/form/postanswers').header('Authorization',`Bearer ${token}`).json({
+            const response = await client.post('api/v1/form/postAnswers').header('Authorization',`Bearer ${token}`).json({
                 "userId":"3",
                 "answers":[
                     {

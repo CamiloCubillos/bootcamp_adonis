@@ -26,7 +26,7 @@ export default class FormsController {
             response.status(500)
             response.json({
                 "state": false,
-                "message": "Error al obtener el listado",
+                "message": "Error al almacenar las respuestas",
                 "error":error.message
             })
         }

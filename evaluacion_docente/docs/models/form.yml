@@ -1,0 +1,40 @@
+definitions:
+  FormAnswers:
+    type: object
+    properties:
+      userId:
+        type: number
+      answers:
+        type: array
+        items:
+          type: object
+          properties:
+            answer:
+              type: string
+            questionId:
+              type: number
+  FormAnswersResponse:
+    type: object
+    properties:
+      state:
+        type: boolean
+      answers:
+        type: array
+        items:
+          type: object
+          properties:
+            id:
+              type: number
+            answer:
+              type: string
+            question_id:
+              type: number
+            form_id:
+              type: number
+            question:
+              type: object
+              properties:
+                id:
+                  type: number
+                question:
+                  type: string

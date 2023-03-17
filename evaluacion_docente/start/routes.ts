@@ -36,7 +36,7 @@ Route.group(() => {
     Route.delete('/deleteQuestion/:id','QuestionsController.deleteQuestion').middleware('admin')
   }).prefix('/questions').middleware('auth')
   Route.group(()=>{
-    Route.post('/postanswers','FormsController.createForm').middleware('student')
+    Route.post('/postAnswers','FormsController.createForm').middleware('student')
     Route.get('/getQuestions','FormsController.getForm')
     Route.get('/getAnswers/:id_teacher','FormsController.getAnswers')
   }).prefix('/form').middleware('auth')
