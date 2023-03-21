@@ -34,7 +34,9 @@ export default class FormsController {
 
     public async getForm({response} : HttpContextContract){
         try {
-            const form : Question[] = await Question.query().preload('options')
+            const form : Question[] = await Question.query().preload('options',sql => {
+                sql.select('id','option')
+            })
             response.status(200)
             return {
                 "state":true,
