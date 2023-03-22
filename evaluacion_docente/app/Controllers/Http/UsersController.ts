@@ -77,13 +77,26 @@ export default class UsersController {
     }
 
     public async getAllUsers({response} : HttpContextContract){
-      const users = await User.all()
-      response.status(200)
-      return users
+      try{
+        const users = await User.query().where('rol_id',2).select('first_name','second_name','surname','second_sur_name','document_type_id','document_number','email','phone')
+        response.status(200)
+        return {
+          state: true,
+          message: "Listado de estudiantes",
+          users: users
+        }
+      }catch(error){
+        response.status(500)
+        return {
+          "state":false,
+          "message":"Error al consultar el detalle del usuario",
+          "error":error
+        }
+      }
     }
 
     public async getUserById({response, params} : HttpContextContract){
-      const user = (await User.query().where('id',params.id))[0]
+      const user = (await User.query().where('id',params.id).select('first_name','second_name','surname','second_sur_name','document_type_id','document_number','email','phone'))[0]
       if(user){
         response.status(200)
         return user
@@ -154,7 +167,7 @@ export default class UsersController {
 
     private generateToken(payload: any):string{
       const opciones = {
-        expiresIn: "2 mins"
+        expiresIn: "5 mins"
       }
       return jwt.sign(payload, Env.get('JWT_SECRET_KEY'), opciones)    
     }

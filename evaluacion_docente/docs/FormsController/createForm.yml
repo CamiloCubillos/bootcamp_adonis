@@ -1,34 +1,34 @@
-/api/v1/form/postAnswers:
-  post:
-    tags:
-      - Form
-    description: Registrar las respuestas de una evaluación a un docente
-    produces:
-      - application/json
-    requestBody:
-      required: true
-      description: "El 'userId' requerido hace referencia al id del docente a ser evaluado. Las respuestas se guardan en un array de objetos, donde cada objeto posee el id de la pregunta que está respondiendo y su respectiva respuesta "
-      content:
-        application/json:
-          schema:
-            $ref: "#/definitions/FormAnswers"
-    responses:
-      200:
-        description: Petición exitosa
-        content:
-          application/json:
-            schema:
-              $ref: "#/definitions/SuccessResponse"
-            example:
-              state: true
-              message: "Respuestas almacenadas con exito"
-      500:
-        description: Petición fallida
-        content:
-          application/json:
-            schema:
-              $ref: "#/definitions/ErrorResponse"
-            example:
-              state: false
-              message: Error al almacenar las respuestas
-              error: El usuario no existe
+# /api/v1/form/postAnswers:
+#   post:
+#     tags:
+#       - Form
+#     description: Registrar las respuestas de una evaluación a un docente
+#     produces:
+#       - application/json
+#     requestBody:
+#       required: true
+#       description: "El 'userId' requerido hace referencia al id del docente a ser evaluado. Las respuestas se guardan en un array de objetos, donde cada objeto posee el id de la pregunta que está respondiendo y su respectiva respuesta "
+#       content:
+#         application/json:
+#           schema:
+#             $ref: "#/definitions/FormAnswers"
+#     responses:
+#       200:
+#         description: Petición exitosa
+#         content:
+#           application/json:
+#             schema:
+#               $ref: "#/definitions/SuccessResponse"
+#             example:
+#               state: true
+#               message: "Respuestas almacenadas con exito"
+#       500:
+#         description: Petición fallida
+#         content:
+#           application/json:
+#             schema:
+#               $ref: "#/definitions/ErrorResponse"
+#             example:
+#               state: false
+#               message: Error al almacenar las respuestas
+#               error: El usuario no existe

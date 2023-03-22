@@ -24,7 +24,7 @@ Route.group(() => {
   Route.post('/login','UsersController.login')
   Route.group(() => {
     Route.post('/create','UsersController.register')
-    Route.get('','UsersController.getAllUsers')
+    Route.get('/getUsers','UsersController.getAllUsers')
     Route.get('/getUser/:id','UsersController.getUserById')
     Route.put('/update/:id','UsersController.updateUser')
   }).prefix('/user').middleware(['auth','admin'])
@@ -34,9 +34,10 @@ Route.group(() => {
     Route.get('/getOptions/:id','QuestionsController.getQuestionOptions')
     Route.put('/updateQuestion/:id','QuestionsController.updateQuestion').middleware('admin')
     Route.delete('/deleteQuestion/:id','QuestionsController.deleteQuestion').middleware('admin')
+    Route.put('/updateAnswer/:id','QuestionsController.updateAnswer').middleware('admin')
   }).prefix('/questions').middleware('auth')
   Route.group(()=>{
-    Route.post('/postAnswers','FormsController.createForm').middleware('student')
+    Route.post('/postanswers','FormsController.createForm').middleware('student')
     Route.get('/getQuestions','FormsController.getForm')
     Route.get('/getAnswers/:id_teacher','FormsController.getAnswers')
   }).prefix('/form').middleware('auth')

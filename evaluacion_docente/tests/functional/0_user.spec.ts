@@ -5,9 +5,9 @@ import { getToken } from './getToken'
 test.group('User CRUD tests...',()=>{
     test('Should list all users...', async ({ client }) => {
         const token = await getToken(1) // Obtener token de un usuario con rol 'admin'
-        const response = await client.get('api/v1/user').header('Authorization',`Bearer ${token}`)
+        const response = await client.get('api/v1/user/getUsers').header('Authorization',`Bearer ${token}`)
         response.assertStatus(200)
-        response.assert?.isArray(response.body())
+        response.assert?.properties(response.body(),['state','message','users'])
     })
     
     test('Should list user by id...', async ({ client }) => {

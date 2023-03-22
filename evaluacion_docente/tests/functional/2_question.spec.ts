@@ -7,15 +7,14 @@ test.group('Question CRUD tests...',()=>{
     test('Should store a question and its options when valid data is given...',async ({ client }) => {
         const token = await getToken(1) // Obtener token de un usuario con rol 'admin'
         const response = await client.post('api/v1/questions/create').header('Authorization',`Bearer ${token}`).json({
-            "question": "¿que dia es hoy?",
+            "question": "¿que hora es?",
             "options": [
-                'lunes',
-                'martes',
-                'miercoles',
-                'jueves'
+                {"opcion":"12:00AM"},
+                {"opcion":"12:00PM"},
+                {"opcion":"06:00AM"},
+                {"opcion":"06:00PM"}
             ]
-        }
-        )
+        })
         response.assertStatus(200)
         response.body().assert?.isObject()
         response.assert?.containsSubset(response.body(),{"state":true, "message":"Pregunta creada exitosamente"})
@@ -24,14 +23,7 @@ test.group('Question CRUD tests...',()=>{
     test('Should give error when trying to store a question with invalid data...',async ({ client, assert }) => {
         const token = await getToken(1) // Obtener token de un usuario con rol 'admin'
         try{
-            await client.post('api/v1/questions/create').header('Authorization',`Bearer ${token}`).json({
-                "options": [
-                    'lunes',
-                    'martes',
-                    'miercoles',
-                    'jueves'
-                ]
-            })
+            await client.post('api/v1/questions/create').header('Authorization',`Bearer ${token}`).json({})
         }catch(error){
             const err = JSON.parse(error)
             assert.isObject(err)
