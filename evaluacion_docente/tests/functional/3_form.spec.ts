@@ -3,15 +3,15 @@ import Question from 'App/Models/Question'
 import { getToken } from './getToken'
 
 test.group('Form CRUD tests...',()=>{
-    // test('Should create form when valid data is given...',async ({ client, assert }) => {
-    //     const token_admin = await getToken(2) // Obtener token de un usuario con rol 'student'
-    //     const response = await client.post('api/v1/form/postanswers').header('Authorization',`Bearer ${token_admin}`).json(        {
-    //         "userId":"3",
-    //         "answers":[1,5]
-    //     })
-    //     response.assertStatus(200)
-    //     assert.properties(response.body(),['state','message'])
-    // })
+    test('Should create form when valid data is given...',async ({ client, assert }) => {
+        const token_admin = await getToken(2) // Obtener token de un usuario con rol 'student'
+        const response = await client.post('api/v1/form/postanswers').header('Authorization',`Bearer ${token_admin}`).json(        {
+            "userId":"3",
+            "answers":[1]
+        })
+        response.assertStatus(200)
+        assert.properties(response.body(),['state','message'])
+    })
 
     test('Should handle errors when trying to create form...',async ({ client, assert }) => {   
         try{

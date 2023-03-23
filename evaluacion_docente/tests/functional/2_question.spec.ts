@@ -46,15 +46,23 @@ test.group('Question CRUD tests...',()=>{
         }
     })
 
-    test('Should edit questions and handle errors related to that...',async ({ client, assert }) => {
+    test('Should edit questions...',async ({ client, assert }) => {
+        const token = await getToken(1) // Obtener token de un usuario con rol 'admin'
+        const response = await client.put('api/v1/questions/updateQuestion/2').header('Authorization',`Bearer ${token}`).json({
+            "question":"Pregunta actualizada"
+        })
+        response.assertStatus(200)
+        assert.isObject(response.body())
+        assert.properties(response.body(),['state','message'])
+    })
+
+    test('Should handle errors related to editing questions...',async ({ client, assert }) => {
         try{
             const token = await getToken(1) // Obtener token de un usuario con rol 'admin'
-            const response = await client.put('api/v1/questions/updateQuestion/1').header('Authorization',`Bearer ${token}`).json({
+            const unexistentQuestionId = 1231245123
+            await client.put('api/v1/questions/updateQuestion/'+unexistentQuestionId).header('Authorization',`Bearer ${token}`).json({
                 "question":"Pregunta actualizada"
             })
-            response.assertStatus(200)
-            assert.isObject(response.body())
-            assert.properties(response.body(),['state','message'])
         }catch(error){
             const err = JSON.parse(error)
             assert.isObject(err)
@@ -79,7 +87,7 @@ test.group('Question CRUD tests...',()=>{
     test('Should delete questions and handle errors related to that...',async ({ client, assert }) => {
         try{
             const token = await getToken(1) // Obtener token de un usuario con rol 'admin'
-            const response = await client.delete('api/v1/questions/deleteQuestion/1').header('Authorization',`Bearer ${token}`)
+            const response = await client.delete('api/v1/questions/deleteQuestion/2').header('Authorization',`Bearer ${token}`)
             response.assertStatus(200)
             assert.isObject(response.body())
             assert.properties(response.body(),['state','message'])
