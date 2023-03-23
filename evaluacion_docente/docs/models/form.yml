@@ -7,13 +7,56 @@ definitions:
       answers:
         type: array
         items:
-          type: object
-          properties:
-            answer:
-              type: string
-            questionId:
-              type: number
-  FormAnswersResponse:
+          type: number
+
+  FormAnswer:
+    type: object
+    properties:
+      id:
+        type: number
+      answer:
+        type: string
+      question_id:
+        type: number
+
+  FormQuestion:
+    type: object
+    properties:
+      id:
+        type: number
+      question:
+        type: string
+      answers:
+        type: array
+        items:
+          $ref: "#/definitions/FormAnswer"
+
+  FormResponse:
+    type: object
+    properties:
+      state:
+        type: boolean
+      questions:
+        type: array
+        items:
+          $ref: "#/definitions/FormQuestion"
+
+  Evaluation:
+    type: array
+    items:
+      type: object
+      properties:
+        question:
+          type: string
+        answer:
+          type: string
+
+  ListEvaluations:
+    type: array
+    items:
+      $ref: "#/definitions/Evaluation"
+
+  EvaluationsResponse:
     type: object
     properties:
       state:
@@ -21,20 +64,4 @@ definitions:
       answers:
         type: array
         items:
-          type: object
-          properties:
-            id:
-              type: number
-            answer:
-              type: string
-            question_id:
-              type: number
-            form_id:
-              type: number
-            question:
-              type: object
-              properties:
-                id:
-                  type: number
-                question:
-                  type: string
+          $ref: "#/definitions/ListEvaluations"

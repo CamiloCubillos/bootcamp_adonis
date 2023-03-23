@@ -8,6 +8,12 @@ export default class Questions extends BaseSchema {
       table.increments('id').primary()
       table.string('question')
     })
+
+    this.defer(async (db) => {
+      await db.table(this.tableName).insert([
+        {'question':'¿Que tan a menudo el docente prepara sus clases?'}
+      ])
+    })
   }
 
   public async down () {

@@ -89,7 +89,7 @@ export default class UsersController {
         response.status(500)
         return {
           "state":false,
-          "message":"Error al consultar el detalle del usuario",
+          "message":"Error al consultar el listado de estudiantes",
           "error":error
         }
       }
@@ -139,6 +139,7 @@ export default class UsersController {
         }else{
           response.status(404)
           return{
+            "state": false,
             "message":'Error al actualizar',
             "error":`El usuario con id: ${id} no se encuentra registrado.`
           }
@@ -167,7 +168,7 @@ export default class UsersController {
 
     private generateToken(payload: any):string{
       const opciones = {
-        expiresIn: "5 mins"
+        expiresIn: "15 mins"
       }
       return jwt.sign(payload, Env.get('JWT_SECRET_KEY'), opciones)    
     }

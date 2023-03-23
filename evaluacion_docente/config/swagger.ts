@@ -14,7 +14,7 @@ export default {
 			info: {
 				title: 'Evaluación docente',
 				version: '1.0.0',
-				description: 'Aplicación de backend para gestionar la evaluación de docentes de un plantel educativo'
+				description: "Aplicación de backend para gestionar la evaluación de docentes de un plantel educativo. Esta API se encuentra protegida mediante JWT. Para todos los endpoints, excepto el login, es necesario un Token. Existen 3 tipos de Token: Admin, para usuarios admin. Student, para usuarios estudiantes. Autorización, que hace referencia a cualquiera de los dos tokens anteriores. Para ingresar con un usuario admin use el corre 'admin@mail.com' y para un usuario student 'student@mail.com'. Ambas cuentas usan la contraseña 'password'"
 			}
 		},
 
